@@ -1,0 +1,4 @@
+asyncio
+pystyle
+discord
+discord.py

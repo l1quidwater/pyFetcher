@@ -1,0 +1,80 @@
+import discord
+import json
+import os
+import sys
+import asyncio
+import shutil
+from pystyle import Colors, Colorate, Center, Box
+from discord.ext import commands
+
+os.system('cls' if os.name == 'nt' else 'clear')
+
+The_User_ID = None
+
+def header():
+    os.system('cls' if os.name == 'nt' else 'clear')
+    
+    def read_log_file():
+        with open("var/log.txt", 'r') as file:
+            file_text = file.read()
+            return file_text
+    
+    print(Colorate.Color(Colors.purple, Center.XCenter(read_log_file()), True))
+    print(Colorate.Color(Colors.purple, Center.XCenter(Box.DoubleCube("v.0.0.1 | created by adam93 | github.com/adaminit")), True))
+    print("\n\n")
+
+def respond(text, state):
+    color = {
+        "Good": Colors.purple,
+        "Error": Colors.red,
+    }.get(state, Colors.white)
+    
+    center = Center.XCenter(text)
+    te = Colorate.Color(color, center)
+
+    print(te)
+
+config = json.load(open("var/config.json"))
+
+async def main():
+    client = discord.Client()
+
+    @client.event
+    async def on_ready():
+        try:
+            user = await client.fetch_user(The_User_ID)
+            
+            def if_banner(user):
+                try:
+                    if user.banner.url:
+                        return True
+                    else:
+                        return False
+                except:
+                    return False
+                    
+            if if_banner(user):
+                ta = Center.XCenter("Scrape Results")
+                print(Colors.purple, ta)
+                return respond(f"\nUsername: {user.global_name}\nUser Id: {user.id}\nCreation: {user.created_at}\nAvatar URL: {user.avatar.url}\nBanner URL: {user.banner.url}", "Good")
+            else:
+                ta = Center.XCenter("Scrape Results")
+                print(Colors.purple, ta)
+                return respond(f"\nUsername: {user.global_name}\nUser Id: {user.id}\nCreation: {user.created_at}\nAvatar URL: {user.avatar.url}", "Good")
+        except:
+            respond("Error, please make sure this is a valid ID.", "Good")
+            await asyncio.sleep(1)
+            respond("Exiting..", "Good")
+            await client.close()
+            await asyncio.sleep(0.5)
+            sys.exit()
+
+    await client.start(config["TOKEN"])
+
+
+if __name__ == '__main__':
+    header()
+    respond("Enter a UserId to scrape\n", "Good")
+    userid = input()
+    The_User_ID = userid
+    asyncio.run(main())
