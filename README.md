@@ -1,6 +1,7 @@
 
 ![Logo](https://i.ibb.co/m6y4b8s/im.png)
-Fetch information like Avatar URLs, Banner URLs and more using pyFetcher.
+
+  Fetch information like Avatar URLs, Banner URLs and more using pyFetcher.
 
 ## Authors
 
