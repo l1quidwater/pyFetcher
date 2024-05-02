@@ -1,5 +1,5 @@
 
-![Logo]([https://dev-to-uploads.s3.amazonaws.com/uploads/articles/th5xamgrr6se0x5ro4g6.png](https://i.ibb.co/HTZt150/logo-og-1842431895.png))
+![Logo](https://ibb.co/zVdXjq1)
 Fetch information like Avatar URLs, Banner URLs and more using pyFetcher.
 
 ## Authors
