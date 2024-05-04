@@ -2,3 +2,4 @@ asyncio
 pystyle
 discord
 discord.py
+py-cord
