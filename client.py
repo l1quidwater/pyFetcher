@@ -9,8 +9,6 @@ from discord.ext import commands
 
 os.system('cls' if os.name == 'nt' else 'clear')
 
-The_User_ID = None
-
 def header():
     os.system('cls' if os.name == 'nt' else 'clear')
     
@@ -34,47 +32,49 @@ def respond(text, state):
 
     print(te)
 
-config = json.load(open("var/config.json"))
+config = json.load(open("./var/config.json"))
 
-async def main():
+async def main(user_ids):
     client = discord.Client()
 
     @client.event
     async def on_ready():
-        try:
-            user = await client.fetch_user(The_User_ID)
-            
-            def if_banner(user):
-                try:
-                    if user.banner.url:
-                        return True
-                    else:
+        for user_id in user_ids:
+            try:
+                user = await client.fetch_user(int(user_id))
+                
+                def if_banner(user):
+                    try:
+                        if user.banner.url:
+                            return True
+                        else:
+                            return False
+                    except:
                         return False
-                except:
-                    return False
-                    
-            if if_banner(user):
-                ta = Center.XCenter("Scrape Results")
-                print(Colors.purple, ta)
-                return respond(f"\nUsername: {user.global_name}\nUser Id: {user.id}\nCreation: {user.created_at}\nAvatar URL: {user.avatar.url}\nBanner URL: {user.banner.url}", "Good")
-            else:
-                ta = Center.XCenter("Scrape Results")
-                print(Colors.purple, ta)
-                return respond(f"\nUsername: {user.global_name}\nUser Id: {user.id}\nCreation: {user.created_at}\nAvatar URL: {user.avatar.url}", "Good")
-        except:
-            respond("Error, please make sure this is a valid ID.", "Good")
-            await asyncio.sleep(1)
-            respond("Exiting..", "Good")
-            await client.close()
-            await asyncio.sleep(0.5)
-            sys.exit()
+                        
+                if if_banner(user):
+                    ta = Center.XCenter("Scrape Results")
+                    print(Colors.purple, ta)
+                    respond(f"\nUsername: {user.global_name}\nUser Id: {user.id}\nCreation: {user.created_at}\nAvatar URL: {user.avatar.url}\nBanner URL: {user.banner.url}", "Good")
+                else:
+                    ta = Center.XCenter("Scrape Results")
+                    print(Colors.purple, ta)
+                    respond(f"\nUsername: {user.global_name}\nUser Id: {user.id}\nCreation: {user.created_at}\nAvatar URL: {user.avatar.url}", "Good")
+            except:
+                respond("Error, please make sure all provided IDs are valid.", "Good")
+
+        await asyncio.sleep(1)
+        respond("Exiting..", "Good")
+        await client.close()
+        await asyncio.sleep(0.5)
+        sys.exit()
 
     await client.start(config["TOKEN"])
 
 
 if __name__ == '__main__':
     header()
-    respond("Enter a UserId to scrape\n", "Good")
-    userid = input()
-    The_User_ID = userid
-    asyncio.run(main())
+    respond("Enter User IDs to scrape (separated by commas):\n", "Good")
+    user_ids_input = input().split(',')
+    user_ids = [uid.strip() for uid in user_ids_input]
+    asyncio.run(main(user_ids))
